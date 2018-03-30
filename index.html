@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <title>Generator Iklan Lowongan Pekerjaan</title>
+    <link href="style.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <header>
+      <div class="row">
+        <div class="rapi">
+          <a><strong style="color:#FF9800">Generator Iklan</strong>
+            <span style="color: black;">Lowongan Pekerjaan</span></a>
+        </div>
+      </div>
+    </header>
+
+    <section id="tabel">
+      <h3>Contoh Hasil Generate Iklan Lowongan Pekerjaan</h3>
+      <img src="img/contoh.png" width="600" height="300">
+      <p>Ciptakan iklan lowongan pekerjaan dengan Mudah!</p>
+
+      <div class="tab">
+        <button class="tablinks" onclick="bukaTab(event, 'Informasi Perusahaan')" id="defaultOpen">Informasi Perusahaan</button>
+        <button class="tablinks" onclick="bukaTab(event, 'Tanggung Jawab')">Tanggung Jawab</button>
+        <button class="tablinks" onclick="bukaTab(event, 'Kebutuhan')">Kebutuhan</button>
+      </div>
+
+      <form onsubmit="return make_json(this);">
+        <div id="Informasi Perusahaan" class="tabcontent">
+          <h3>Informasi Perusahaan</h3>
+            <div class="row">
+              <div class="col-25">
+                <label>Nama Perusahaan</label>
+              </div>
+              <div class="col-75">
+                <input type="text" name="nama_perusahaan" placeholder="Nama Perusahaan anda">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-25">
+                <label>Email</label>
+              </div>
+              <div class="col-75">
+                <input type="text" name="email" placeholder="Email anda">
+              </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                  <label>Lowongan pekerjaan</label>
+                </div>
+                <div class="col-75">
+                  <input type="text" name="lowongan_pekerjaan" placeholder="Lowongan yg dibutuhkan">
+                </div>
+            </div>
+            <div class="row">
+              <div class="col-25">
+                <label>Deskripsi Perusahaan</label>
+              </div>
+              <div class="col-75">
+                <textarea name="deskripsi_perusahaan" placeholder="Deskripsi perusahaan" rows="3"></textarea>
+              </div>
+            </div>
+        </div>
+
+        <div id="Tanggung Jawab" class="tabcontent">
+          <h3>Tambah Tanggung Jawab</h3>
+          <div id="myDIV" class="header">
+              <input type="text" id="myInput" placeholder="Tambah.." style="width:83%">
+              <span onclick="newElement()" class="addBtn">Tambah</span>
+          </div>
+            
+          <ul id="myUL">
+          </ul> 
+        </div>
+
+        <div id="Kebutuhan" class="tabcontent">
+          <h3>Kebutuhan</h3>
+          <div id="myDIV" class="header">
+              <input type="text" id="input_kebutuhan" placeholder="Tambah.." style="width:83%">
+              <span onclick="newKebutuhan()" class="addBtn">Tambah</span>
+          </div>
+            
+          <ul id="myKebutuhan">
+          </ul>
+        </div>
+        
+        <div class="row" style="float:right; padding:3px;">
+            <input type="submit" id="myBtn" value="Preview">
+        </div>
+    </form>
+    </section>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span class="closemodal" onclick="resetObj()">&times;</span>
+          <h1 id="nama_perusahaan"></h1>
+          <br>
+
+          <h4>Dibutuhkan : <strong id="lowongan">Karyawan Tetap</strong></h4>
+          <p id="deskripsi"></p>
+          <br>
+
+          <h3>Tanggung Jawab</h3>
+          <ul id="tanggungJawab" style="margin-left:20px">
+          </ul>
+          <br>
+
+          <h3>Kebutuhan</h3>
+          <ul id="kebutuhan" style="margin-left:20px">
+          </ul>
+
+          <br>
+            <h2>Hubungi</h2>
+            <strong id="nama_perusahaan_hubungi"></strong>
+            <br>
+            <strong id="email"></strong>
+        </div>
+      
+      
+    </div>
+    <footer>
+        © 2018 Soni Wijaya All rights reserved.
+    </footer>
+
+    
+    <script>
+    // SIMPAN OBJECT DAN TAMPILKAN OBJECT
+    function make_json(form){
+    var json = {
+      "nama_perusahaan":form.nama_perusahaan.value,
+      "email":form.email.value,
+      "lowongan_pekerjaan":form.lowongan_pekerjaan.value,
+      "deskripsi_perusahaan":form.deskripsi_perusahaan.value,
+      "tanggung_jawab":[],
+      "kebutuhan": [],
+    }
+    
+    var getLi = document.getElementsByClassName("kelas");
+    for(var i=0;i<getLi.length;i++){
+      json.tanggung_jawab.push(getLi[i].getAttribute('data-value'));
+    }
+
+    var getLikebutuhan = document.getElementsByClassName("kelas1");
+    for(var i=0;i<getLikebutuhan.length;i++){
+      json.kebutuhan.push(getLikebutuhan[i].getAttribute('data-value2'));
+    }
+
+    var html = JSON.stringify(json);
+    var obj = JSON.parse(html)
+    
+    document.getElementById('nama_perusahaan').innerHTML=obj.nama_perusahaan;
+    document.getElementById('lowongan').innerHTML=obj.lowongan_pekerjaan;
+    document.getElementById('deskripsi').innerHTML=obj.deskripsi_perusahaan;
+
+    //buat li tanggung jawab
+    for(var i=0;i<json.tanggung_jawab.length;i++){
+      var litanggungjawab = document.createElement("li");
+      var input = obj.tanggung_jawab[i];
+
+      var ti = document.createTextNode(input);
+      litanggungjawab.appendChild(ti);
+
+      document.getElementById("tanggungJawab").appendChild(litanggungjawab);
+    }
+    
+    //buat li kebutuhan
+    for(var i=0;i<json.kebutuhan.length;i++){
+      var liKebutuhan = document.createElement("li");
+      var inputValue = obj.kebutuhan[i];
+
+      var t = document.createTextNode(inputValue);
+      liKebutuhan.appendChild(t);
+
+      document.getElementById("kebutuhan").appendChild(liKebutuhan);
+    }
+
+    document.getElementById('nama_perusahaan_hubungi').innerHTML=obj.nama_perusahaan;
+    document.getElementById('email').innerHTML=obj.email;
+    return false;
+
+    }</script>
+    <script src="tab-modal-list.js"></script>
+  </body>
+</html> 
